@@ -1,0 +1,16 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+<body>
+	<script>
+		try{
+			var $data='jsonstring';
+			var $dataObj=eval("("+$data+")");//转换为json对象 
+			if(parent.formCallback)
+				parent.formCallback($dataObj);//回调函数
+		}catch(ex){}
+	</script>
+</body>
+</html>

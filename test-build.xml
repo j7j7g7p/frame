@@ -1,0 +1,60 @@
+<project basedir="." default="jar">
+	<path id="classPath">
+		<fileset dir="lib1">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="lib2">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="lib3">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+	<target name="init">
+		<echo message="Release初始化..." />
+		<delete dir="release" />
+		<mkdir dir="release/build" />
+	</target>
+	<target name="compile" depends="init">
+		<echo message="开始编译Java源文件..." />
+		<javac classpathref="classPath" destdir="release/build" encoding="UTF-8" debug="true" deprecation="false" listfiles="off" includeAntRuntime="no" verbose="ture">
+			<src path="src" />
+			<src path="test" />
+		</javac>
+	</target>
+	<target name="jar" depends="compile">
+		<jar destfile="release/framework.jar">
+			<fileset dir="release/build">
+				<include name="**/*.*" />
+			</fileset>
+			<fileset dir="src">
+				<include name="**/*.html" />
+			</fileset>
+			<fileset dir="config">
+				<include name="*.*" />
+			</fileset>
+		</jar>
+	</target>
+	<target name="release" depends="jar">
+		<copy todir="..\parkCloud\web\WEB-INF\lib" overwrite="true">
+			<fileset dir="release">
+				<include name="framework.jar" />
+			</fileset>
+		</copy>
+		<copy todir="..\parkCloud-pay\web\WEB-INF\lib" overwrite="true">
+			<fileset dir="release">
+				<include name="framework.jar" />
+			</fileset>
+		</copy>
+		<copy todir="..\easyCharge\web\WEB-INF\lib" overwrite="true">
+			<fileset dir="release">
+				<include name="framework.jar" />
+			</fileset>
+		</copy>
+		<copy todir="..\NetServer\lib" overwrite="true">
+			<fileset dir="release">
+				<include name="framework.jar" />
+			</fileset>
+		</copy>
+	</target>
+</project>

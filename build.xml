@@ -1,0 +1,97 @@
+<project basedir="." default="jar">
+	<target name="init">
+		<echo message="Release初始化..." />
+		<delete dir="release" />
+		<mkdir dir="release/build" />
+		<!--
+        <delete dir="libs"/>
+        <exec executable="mvn.bat">
+            <arg line=" dependency:copy-dependencies -DoutputDirectory=libs"/>
+        </exec>
+        -->
+	</target>
+	<target name="compile" depends="init">
+		<echo message="开始编译Java源文件..." />
+		<path id="classPath">
+			<fileset dir="libs">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="lib-ext">
+				<include name="**/*.jar" />
+			</fileset>
+		</path>
+		<javac classpathref="classPath" destdir="release/build" encoding="UTF-8" debug="true" deprecation="false" listfiles="off" includeAntRuntime="no" verbose="ture">
+			<src path="src" />
+			<compilerarg value="-Xlint:deprecation" />
+		</javac>
+
+	</target>
+
+	<target name="test">
+		<echo message="开始编译Java源文件..." />
+		<mkdir dir="release/build" />
+		<mkdir dir="release/test" />
+		<javac classpathref="classPath" destdir="release/build" encoding="UTF-8" debug="true" deprecation="false" listfiles="off" includeAntRuntime="no" verbose="ture">
+			<src path="src" />
+			<src path="test" />
+		</javac>
+		<junit>
+			<classpath>
+				<path refid="classPath" />
+				<pathelement path="release/build" />
+			</classpath>
+			<formatter type="xml" />
+			<batchtest todir="release/test">
+				<fileset dir="release/build">
+					<include name="**/*Junit.class" />
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+
+
+	<target name="jar" depends="compile">
+		<jar destfile="release/framework.jar">
+			<fileset dir="release/build">
+				<include name="**/*.*" />
+			</fileset>
+			<fileset dir="src">
+				<include name="**/*.html" />
+			</fileset>
+		</jar>
+	</target>
+	<target name="release" depends="jar">
+		<copy todir="..\iParkCloud\web\WEB-INF\lib" overwrite="true">
+			<fileset dir="release">
+				<include name="framework.jar" />
+			</fileset>
+		</copy>
+		<copy todir="..\iFinancial\web\WEB-INF\lib" overwrite="true">
+			<fileset dir="release">
+				<include name="framework.jar" />
+			</fileset>
+		</copy>
+		<copy todir="..\easyCharge\web\WEB-INF\lib" overwrite="true">
+			<fileset dir="release">
+				<include name="framework.jar" />
+			</fileset>
+		</copy>
+		<copy todir="..\iBill\web\WEB-INF\lib" overwrite="true">
+			<fileset dir="release">
+				<include name="framework.jar" />
+			</fileset>
+		</copy>
+		<copy todir="..\iRoad\web\WEB-INF\lib" overwrite="true">
+			<fileset dir="release">
+				<include name="framework.jar" />
+			</fileset>
+		</copy>
+		<!--
+        <copy todir="..\NetServer\lib" overwrite="true">
+            <fileset dir="release">
+                <include name="framework.jar"/>
+            </fileset>
+        </copy>
+        -->
+	</target>
+</project>

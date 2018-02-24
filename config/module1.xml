@@ -1,0 +1,25 @@
+<!--测试模块使用 -->
+<dataset>
+	<sql name="sql1" memo="测试1">
+		SELECT * FROM $table0 where id!=?
+	</sql>
+	<sql name="sql2" memo="测试2">
+		insert into
+		t1(id,typeint,typedecimal,typedouble,typedate) values(?,?,?,?,?)
+	</sql>
+	<sql name="getComInfoList" memo="获取管理公司列表">
+		select id,name,tel from com_info
+		where isvalid=1 and status = 1
+	</sql>
+	<sql name="getPayedOrderByMebID" memo="根据会员ID查找已缴费的订单信息">
+		select t1.id as t1_id,t2.id
+		as t2_id,t1.outtime as t1_outtime from $table0
+		as t1 left join plo_info
+		as t2 on t1.ploid=t2.id where t1.isvalid = 1
+		and t1.orderstatus = 4
+	</sql>
+	<sql name="getPayedOrderByMebID2" memo="根据会员ID查找已缴费的订单信息">
+		select t1.id as t1_id,t1.outtime as t1_outtime from $table0
+		as t1 where t1.isvalid = 1 and t1.orderstatus = 4
+	</sql>
+</dataset>
