@@ -1,5 +1,7 @@
 package com.base.mq.rabbit;
 
+import java.util.Map;
+
 import org.apache.log4j.Logger;
 
 import com.base.mq.MQSender;
@@ -28,6 +30,23 @@ public class RabbitSender extends MQSender {
 		Channel channel = getChannel();
 		//
 		channel.queueDeclare(queue, true, false, false, null);
+		channel.queueBind(queue, exchange, routingkey + queue);
+		//
+		String content = sendContent.toString();
+		if (StrUtils.isNull(content))
+			throw new Exception("消息为空");
+		channel.basicPublish(exchange, routingkey + queue,
+				MessageProperties.PERSISTENT_TEXT_PLAIN, content.getBytes());
+		log.info("send content:" + content);
+		//
+		channel.close();
+		channel.getConnection().close();
+	}
+	
+	public void send(String queue, ParaMap sendContent,Map map) throws Exception {
+		Channel channel = getChannel();
+		//
+		channel.queueDeclare(queue, true, false, false, map);//map延时参数
 		channel.queueBind(queue, exchange, routingkey + queue);
 		//
 		String content = sendContent.toString();

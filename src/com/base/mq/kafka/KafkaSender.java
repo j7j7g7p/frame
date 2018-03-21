@@ -1,5 +1,6 @@
 package com.base.mq.kafka;
 
+import java.util.Map;
 import java.util.Properties;
 
 import kafka.producer.BaseProducer;
@@ -55,5 +56,10 @@ public class KafkaSender extends MQSender {
 		long end = System.currentTimeMillis();
 		System.out.println("ms:" + (end - begin));
 
+	}
+
+	@Override
+	public void send(String queue, ParaMap sendContent, Map map) throws Exception {
+		
 	}
 }
